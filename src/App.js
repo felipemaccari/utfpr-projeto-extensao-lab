@@ -1,25 +1,29 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useMemo, Suspense, lazy } from "react";
+import Providers from "./providers";
 
-function App() {
+import LoadingBox from "components/LoadingBox";
+
+const Auth = lazy(() => import("./pages/auth"));
+const Admin = lazy(() => import("./pages/admin"));
+
+const App = () => {
+  const authUser = localStorage.getItem("USER");
+
+  const Component = useMemo(() => {
+    if (!authUser) {
+      return Auth;
+    }
+
+    return Admin;
+  }, [authUser]);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Suspense fallback={<LoadingBox />}>
+      <Providers>
+        <Component />
+      </Providers>
+    </Suspense>
   );
-}
+};
 
 export default App;
