@@ -1,3 +1,5 @@
+import { BrowserRouter } from "react-router-dom";
+
 import { ChakraProvider } from "@chakra-ui/react";
 
 import { QueryClient, QueryClientProvider } from "react-query";
@@ -7,13 +9,21 @@ const Providers = ({ children }) => {
     defaultOptions: {
       queries: {
         refetchOnWindowFocus: false,
+        refetchOnmount: false,
+        refetchOnReconnect: false,
+        retry: false,
+        staleTime: 5 * 60 * 1000,
       },
     },
   });
 
   return (
     <ChakraProvider>
-      <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
+      <BrowserRouter>
+        <QueryClientProvider client={queryClient}>
+          {children}
+        </QueryClientProvider>
+      </BrowserRouter>
     </ChakraProvider>
   );
 };
