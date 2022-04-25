@@ -35,8 +35,8 @@ const Login = () => {
 
       return;
     },
-    onSuccess: (data) => {
-      localStorage.setItem("USER", data);
+    onSuccess: ({ data }) => {
+      localStorage.setItem("USER", data.token);
 
       window.location.reload();
     },
