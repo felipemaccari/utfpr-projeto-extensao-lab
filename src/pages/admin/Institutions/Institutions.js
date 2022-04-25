@@ -2,17 +2,16 @@ import {
   Flex,
   Text,
   Spinner,
-  Menu,
-  MenuButton,
-  IconButton,
-  MenuList,
-  MenuItem,
-  Divider,
+  Table,
+  Thead,
+  Tbody,
+  Tr,
+  Th,
+  Td,
 } from "@chakra-ui/react";
 
-import { BiDotsVerticalRounded } from "react-icons/bi";
-
 import Container from "components/Container";
+import InstitutionsTableActions from "./InstitutionsTableActions";
 import { useQueryListInstitutions } from "service/institutions";
 
 const Institutions = () => {
@@ -43,41 +42,40 @@ const Institutions = () => {
           Relação das instituições do sistema
         </Text>
 
-        <Flex direction="column" mt="30px">
-          {data.map((institution) => (
-            <>
-              <Flex
+        <Table variant="simple" mt="50px">
+          <Thead>
+            <Tr>
+              <Th>
+                <Text color="greyText" fontSize="13px" fontWeight="semiBold">
+                  Instituição
+                </Text>
+              </Th>
+
+              <Th>
+                <Text color="greyText" fontSize="13px" fontWeight="semiBold">
+                  Cidade
+                </Text>
+              </Th>
+
+              <Th></Th>
+            </Tr>
+          </Thead>
+
+          <Tbody>
+            {data.map((institution) => (
+              <Tr
                 key={institution.id}
-                justify="space-between"
-                align="center"
-                py="10px"
-                px="20px"
-                flex={1}
                 _hover={{ cursor: "pointer", background: "#eef" }}
               >
-                <Text fontWeight="semiBold" fontSize="20px">
-                  {institution.nome}
-                </Text>
-
-                <Menu>
-                  <MenuButton
-                    as={IconButton}
-                    aria-label="Options"
-                    icon={<BiDotsVerticalRounded size={20} />}
-                    variant="ghost"
-                  />
-
-                  <MenuList>
-                    <MenuItem>Editar</MenuItem>
-                    <MenuItem color="red">Remover</MenuItem>
-                  </MenuList>
-                </Menu>
-              </Flex>
-
-              <Divider />
-            </>
-          ))}
-        </Flex>
+                <Td>{institution.nome}</Td>
+                <Td>{institution.cidade.nome}</Td>
+                <Td isNumeric>
+                  <InstitutionsTableActions />
+                </Td>
+              </Tr>
+            ))}
+          </Tbody>
+        </Table>
       </Container>
     </Flex>
   );
