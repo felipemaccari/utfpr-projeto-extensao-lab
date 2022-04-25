@@ -6,21 +6,44 @@ import {
   Button,
   Text,
   FormErrorMessage,
+  useToast,
 } from "@chakra-ui/react";
 
 import { useForm } from "react-hook-form";
 
+import { useMutationAuth } from "service/auth";
+
 const Login = () => {
+  const toast = useToast();
+
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm();
 
-  const onSubmit = (data) => {
-    localStorage.setItem("USER", data);
+  const { mutate, isLoading } = useMutationAuth({
+    onError: ({ response }) => {
+      const message = response.data.message;
 
-    window.location.reload();
+      toast({
+        title: message,
+        status: "error",
+        duration: 9000,
+        isClosable: true,
+      });
+
+      return;
+    },
+    onSuccess: (data) => {
+      localStorage.setItem("USER", data);
+
+      window.location.reload();
+    },
+  });
+
+  const onSubmit = async (data) => {
+    await mutate(data);
   };
 
   return (
@@ -36,16 +59,18 @@ const Login = () => {
             Sistema do Laboratório de Química
           </Text>
 
-          <FormControl isInvalid={errors.login}>
-            <FormLabel htmlFor="login">Login</FormLabel>
+          <FormControl isInvalid={errors.username}>
+            <FormLabel htmlFor="username">Usuário</FormLabel>
             <Input
-              id="login"
+              id="username"
               type="text"
-              {...register("login", { required: "O login é obrigatório!" })}
+              {...register("username", {
+                required: "O nome de usuário é obrigatório!",
+              })}
             />
 
-            {errors.login && (
-              <FormErrorMessage>{errors.login.message}</FormErrorMessage>
+            {errors.username && (
+              <FormErrorMessage>{errors.username.message}</FormErrorMessage>
             )}
           </FormControl>
 
@@ -62,7 +87,12 @@ const Login = () => {
             )}
           </FormControl>
 
-          <Button mt="50px" type="submit">
+          <Button
+            mt="50px"
+            type="submit"
+            isLoading={isLoading}
+            isDisabled={isLoading}
+          >
             Login
           </Button>
         </Flex>
