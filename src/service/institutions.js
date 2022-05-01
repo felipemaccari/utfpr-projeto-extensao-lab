@@ -11,11 +11,11 @@ export const useQueryListInstitutions = (options = {}) =>
     options
   );
 
-// export const useMutationAmbients = (options = {}) =>
-//   useMutation(
-//     (ambientData) =>
-//       axios
-//         .post(`${BASE_URL}/ambientes`, ambientData)
-//         .then((result) => result.data),
-//     options
-//   );
+export const useMutationCreateInstitution = (options = {}) =>
+  useMutation(
+    (institutionData) =>
+      axios
+        .post(`${BASE_URL}/instituicao`, institutionData)
+        .then((result) => result.data),
+    options
+  );
