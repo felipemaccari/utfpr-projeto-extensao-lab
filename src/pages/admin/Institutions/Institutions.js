@@ -8,14 +8,19 @@ import {
   Tr,
   Th,
   Td,
+  Button,
+  useDisclosure,
 } from "@chakra-ui/react";
 
 import Container from "components/Container";
 import InstitutionsTableActions from "./InstitutionsTableActions";
+import InsitutionsModalCreate from "./InsitutionsModalCreate";
 import { useQueryListInstitutions } from "service/institutions";
 
 const Institutions = () => {
   const { data, isLoading } = useQueryListInstitutions();
+
+  const { isOpen, onOpen, onClose } = useDisclosure();
 
   if (isLoading) {
     return (
@@ -32,52 +37,65 @@ const Institutions = () => {
   }
 
   return (
-    <Flex direction="column" px="10%" pt="50px" minHeight="calc(100vh - 80px)">
-      <Text fontSize="25px" fontWeight="bold">
-        Instituições
-      </Text>
-
-      <Container my="25px" direction="column" flex={1} p="32px">
-        <Text fontSize="20px" fontWeight="semiBold">
-          Relação das instituições do sistema
+    <>
+      <Flex
+        direction="column"
+        px="10%"
+        pt="50px"
+        minHeight="calc(100vh - 80px)"
+      >
+        <Text fontSize="25px" fontWeight="bold">
+          Instituições
         </Text>
 
-        <Table variant="simple" mt="50px">
-          <Thead>
-            <Tr>
-              <Th>
-                <Text color="greyText" fontSize="13px" fontWeight="semiBold">
-                  Instituição
-                </Text>
-              </Th>
+        <Button mt="50px" width="350px" onClick={onOpen}>
+          Adicionar Instituição
+        </Button>
 
-              <Th>
-                <Text color="greyText" fontSize="13px" fontWeight="semiBold">
-                  Cidade
-                </Text>
-              </Th>
+        <Container my="18px" direction="column" flex={1} p="32px">
+          <Text fontSize="20px" fontWeight="semiBold">
+            Relação das instituições do sistema
+          </Text>
 
-              <Th></Th>
-            </Tr>
-          </Thead>
+          <Table variant="simple" mt="50px">
+            <Thead>
+              <Tr>
+                <Th>
+                  <Text color="greyText" fontSize="13px" fontWeight="semiBold">
+                    Instituição
+                  </Text>
+                </Th>
 
-          <Tbody>
-            {data.map((institution) => (
-              <Tr
-                key={institution.id}
-                _hover={{ cursor: "pointer", background: "#eef" }}
-              >
-                <Td>{institution.nome}</Td>
-                <Td>{institution.cidade.nome}</Td>
-                <Td isNumeric>
-                  <InstitutionsTableActions />
-                </Td>
+                <Th>
+                  <Text color="greyText" fontSize="13px" fontWeight="semiBold">
+                    Cidade
+                  </Text>
+                </Th>
+
+                <Th></Th>
               </Tr>
-            ))}
-          </Tbody>
-        </Table>
-      </Container>
-    </Flex>
+            </Thead>
+
+            <Tbody>
+              {data.map((institution) => (
+                <Tr
+                  key={institution.id}
+                  _hover={{ cursor: "pointer", background: "#eef" }}
+                >
+                  <Td>{institution.nome}</Td>
+                  <Td>{institution.cidade.nome}</Td>
+                  <Td isNumeric>
+                    <InstitutionsTableActions />
+                  </Td>
+                </Tr>
+              ))}
+            </Tbody>
+          </Table>
+        </Container>
+      </Flex>
+
+      <InsitutionsModalCreate isOpen={isOpen} onClose={onClose} />
+    </>
   );
 };
 
