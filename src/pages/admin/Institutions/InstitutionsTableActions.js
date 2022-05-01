@@ -1,14 +1,11 @@
-import {
-  Menu,
-  MenuButton,
-  MenuList,
-  MenuItem,
-  IconButton,
-} from "@chakra-ui/react";
+import { Menu, MenuButton, MenuList, IconButton } from "@chakra-ui/react";
 
 import { BiDotsVerticalRounded } from "react-icons/bi";
+import InstitutionsTableActionsDelete from "./InstitutionsTableActionsDelete";
 
-const InstitutionsTableActions = () => (
+import InstitutionsTableActionsEdit from "./InstitutionsTableActionsEdit";
+
+const InstitutionsTableActions = ({ institution }) => (
   <Menu>
     <MenuButton
       as={IconButton}
@@ -18,8 +15,8 @@ const InstitutionsTableActions = () => (
     />
 
     <MenuList>
-      <MenuItem>Editar</MenuItem>
-      <MenuItem color="red">Remover</MenuItem>
+      <InstitutionsTableActionsEdit institution={institution} />
+      <InstitutionsTableActionsDelete institution={institution} />
     </MenuList>
   </Menu>
 );
