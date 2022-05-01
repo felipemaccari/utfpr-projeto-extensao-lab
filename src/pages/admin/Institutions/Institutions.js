@@ -13,9 +13,10 @@ import {
 } from "@chakra-ui/react";
 
 import Container from "components/Container";
+import { useQueryListInstitutions } from "service/institutions";
+
 import InstitutionsTableActions from "./InstitutionsTableActions";
 import InsitutionsModalCreate from "./InsitutionsModalCreate";
-import { useQueryListInstitutions } from "service/institutions";
 
 const Institutions = () => {
   const { data, isLoading } = useQueryListInstitutions();
@@ -68,6 +69,12 @@ const Institutions = () => {
 
                 <Th>
                   <Text color="greyText" fontSize="13px" fontWeight="semiBold">
+                    Tipo da Instituição
+                  </Text>
+                </Th>
+
+                <Th>
+                  <Text color="greyText" fontSize="13px" fontWeight="semiBold">
                     Cidade
                   </Text>
                 </Th>
@@ -83,9 +90,10 @@ const Institutions = () => {
                   _hover={{ cursor: "pointer", background: "#eef" }}
                 >
                   <Td>{institution.nome}</Td>
+                  <Td>{institution.tipoInstituicao}</Td>
                   <Td>{institution.cidade.nome}</Td>
                   <Td isNumeric>
-                    <InstitutionsTableActions />
+                    <InstitutionsTableActions institution={institution} />
                   </Td>
                 </Tr>
               ))}
