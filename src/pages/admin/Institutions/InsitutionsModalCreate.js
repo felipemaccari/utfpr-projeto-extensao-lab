@@ -135,8 +135,7 @@ const InsitutionsModalCreate = ({ isOpen, onClose }) => {
                 <Button
                   variant="ghost"
                   mt="50px"
-                  type="submit"
-                  isLoading={isLoading}
+                  onClick={onClose}
                   isDisabled={isLoading}
                 >
                   Cancelar
