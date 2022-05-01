@@ -30,7 +30,14 @@ const FormFieldCitiesListItem = styled.li`
     selectedItem === item ? "bold" : "normal"};
 `;
 
-const FormFieldCities = ({ id, errors, onChange, label, errorMessage }) => {
+const FormFieldCities = ({
+  id,
+  value,
+  errors,
+  onChange,
+  label,
+  errorMessage,
+}) => {
   const { data, isLoading } = useQueryListCities();
 
   const handleFilterItems = useCallback(
@@ -51,7 +58,8 @@ const FormFieldCities = ({ id, errors, onChange, label, errorMessage }) => {
   return (
     <FormControl isInvalid={errors[id]}>
       <Downshift
-        onChange={(e) => onChange(e || {})}
+        onStateChange={(e) => onChange(e.selectedItem || {})}
+        inputValue={value && value.nome}
         itemToString={(item) => (item ? item.nome : "")}
       >
         {({
